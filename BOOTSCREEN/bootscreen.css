@@ -1,0 +1,123 @@
+:root {
+    --accent: #ffffff;
+    --text: #ffffff;
+    --bg: #000000;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+img {
+    width: 200px;
+    height: auto;
+    margin-bottom: 2rem;
+    animation: pulse 3s infinite ease-in-out;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
+    }
+}
+
+.brand {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 0.5rem;
+    margin: 0;
+    color: var(--text);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.bios-prompt {
+    margin-top: 3rem;
+    font-size: 1rem;
+    opacity: 0.7;
+    letter-spacing: 0.1rem;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.02) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Progress Bar */
+.progress-container {
+    width: 300px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.9));
+    animation: progress 5s forwards;
+}
+
+@keyframes progress {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}

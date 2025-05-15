@@ -1,27 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
-let splashWindow;
 let mainWindow;
-
-function createSplashWindow() {
-  splashWindow = new BrowserWindow({
-    fullscreen: true,
-    frame: false,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
-    }
-  });
-
-  splashWindow.loadFile(path.join(__dirname, 'BOOTLOADER', 'bootloader.html'));
-
-  // Nach 6 Sekunden Hauptfenster öffnen
-  setTimeout(() => {
-    splashWindow.close();
-    createMainWindow();
-  }, 6000);
-}
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
@@ -32,15 +12,26 @@ function createMainWindow() {
     }
   });
 
-  mainWindow.loadFile('index.html');
+  // Zuerst bootloader.html laden
+  mainWindow.loadFile(path.join(__dirname, 'BOOTLOADER', 'bootloader.html'));
+
+  // Nach 6 Sekunden bootscreen.html laden
+  setTimeout(() => {
+    mainWindow.loadFile(path.join(__dirname, 'BOOTSCREEN', 'bootscreen.html'));
+  }, 6000);
+
+  // Nach weiteren 5 Sekunden index.html laden
+  setTimeout(() => {
+    mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  }, 6000 + 5000);
 }
 
-app.whenReady().then(createSplashWindow);
+app.whenReady().then(createMainWindow);
 
-app.on('activate', function () {
+app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createMainWindow();
 });
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
