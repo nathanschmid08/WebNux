@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WebNux UEFI</title>
+</head>
+<body>
+    <h1>WebNux Unified Extensible Firmware Interface</h1>
+
+    <div id="datetime" style="font-family: monospace; font-size: 1.2rem; margin-bottom: 1rem;"></div>
+
+    <div id="system-info" style="font-family: monospace; margin-bottom: 1rem;">
+        <div>Firmware Version: 1.0.3</div>
+        <div>System: WebNux Model X1000</div>
+        <div>CPU: WebNux Processor 3.2 GHz (8 cores)</div>
+        <div>Memory: 16 GB DDR5</div>
+        <div>Secure Boot: Enabled</div>
+    </div>
+
+    <div>
+        <h2>Boot Manager</h2>
+        <ul id="boot-options" style="list-style: none; padding-left: 0; font-family: monospace; font-size: 1rem;">
+            <li data-index="0">1. WebNux Linux</li>
+            <li data-index="1">2. Recovery Mode</li>
+            <li data-index="2">3. EFI Shell</li>
+            <li data-index="3">4. Network Boot</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 2rem; font-family: monospace; font-size: 0.9rem;">
+        Press F2 to enter setup | Press ESC to exit | ↑↓ to navigate | Enter to boot
+    </div>
+
+    <script>
+        const datetimeDiv = document.getElementById('datetime');
+        const options = document.querySelectorAll('#boot-options li');
+        let selectedIndex = 0;
+
+        function updateDateTime() {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+            const yyyy = now.getFullYear();
+            const MM = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+
+            datetimeDiv.textContent = `Date: ${yyyy}-${MM}-${dd}   Time: ${hh}:${mm}:${ss}`;
+        }
+
+        function highlightSelected() {
+            options.forEach((opt, i) => {
+                if(i === selectedIndex) {
+                    opt.style.backgroundColor = 'gray';
+                    opt.style.color = 'white';
+                } else {
+                    opt.style.backgroundColor = '';
+                    opt.style.color = '';
+                }
+            });
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowDown') {
+                selectedIndex = (selectedIndex + 1) % options.length;
+                highlightSelected();
+            }
+            if(e.key === 'ArrowUp') {
+                selectedIndex = (selectedIndex - 1 + options.length) % options.length;
+                highlightSelected();
+            }
+            if(e.key === 'Enter') {
+                alert(`Booting: ${options[selectedIndex].textContent.trim()}`);
+            }
+            if(e.key === 'Escape') {
+                alert('Exiting UEFI Boot Manager');
+            }
+            if(e.key === 'F2') {
+                alert('Entering UEFI Setup');
+            }
+        });
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        highlightSelected();
+    </script>
+</body>
+</html>
