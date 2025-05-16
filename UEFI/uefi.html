@@ -1,94 +1,537 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>WebNux UEFI</title>
-<style>
-    html {
-        cursor: url('cursor.cur') 16 16, auto;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WebNux UEFI</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #0000AA;
+      color: #FFFF00;
+      font-family: monospace;
+      cursor: url('cursor.cur') 16 16, auto;
+      height: 100%;
     }
-</style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .screen {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      position: relative;
+      background-color: #0000AA;
+      background-image: linear-gradient(rgba(0, 0, 170, 0.7) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 0, 170, 0.7) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 1.5rem 0;
+      color: #FFFFFF;
+      text-shadow: 2px 2px 4px #0000FF;
+      padding: 0.5rem;
+      border-bottom: 2px solid #FFFFFF;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+    }
+
+    .box {
+      border: 2px solid #FFFFFF;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background-color: #000088;
+      position: relative;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .system-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+
+    .system-info div {
+      padding: 0.3rem;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+    }
+
+    .system-info div span {
+      color: #FFFFFF;
+      font-weight: bold;
+    }
+
+    .boot-menu {
+      padding-left: 0;
+    }
+
+    .boot-menu li {
+      list-style: none;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.4rem;
+      background-color: rgba(0, 0, 170, 0.5);
+      color: #FFFF00;
+      border-left: 4px solid transparent;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .boot-menu li:hover {
+      background-color: rgba(170, 0, 0, 0.3);
+    }
+
+    .boot-menu li.selected {
+      background-color: #AA0000;
+      color: #FFFFFF;
+      border-left: 4px solid #FFFF00;
+    }
+    
+    .boot-menu li::before {
+      content: attr(data-index);
+      position: absolute;
+      right: 10px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .footer, .status-bar {
+      border: 2px solid #FFFFFF;
+      background-color: #000088;
+      padding: 0.5rem;
+      text-align: center;
+      color: #FFFFFF;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .footer div {
+      margin: 0.2rem 0.5rem;
+    }
+
+    .key {
+      background-color: #444444;
+      border: 1px solid #FFFFFF;
+      padding: 2px 5px;
+      border-radius: 3px;
+      box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .status-bar {
+      margin-bottom: 1rem;
+      justify-content: space-between;
+      padding: 0.6rem 1rem;
+    }
+
+    #datetime {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #FFFF00;
+      margin-bottom: 1rem;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 0;
+    }
+
+    .tab {
+      padding: 0.5rem 1rem;
+      background-color: #000066;
+      border: 1px solid #FFFFFF;
+      border-bottom: none;
+      margin-right: 0.2rem;
+      cursor: pointer;
+      color: #AAAAAA;
+    }
+
+    .tab.active {
+      background-color: #000088;
+      color: #FFFFFF;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Progress bar for memory test */
+    .progress-container {
+      width: 100%;
+      background-color: #333333;
+      height: 20px;
+      margin: 1rem 0;
+      border: 1px solid #FFFFFF;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #00AA00;
+      width: 0%;
+      transition: width 0.5s;
+      position: relative;
+    }
+
+    .progress-text {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      color: #FFFFFF;
+      font-weight: bold;
+    }
+
+    .blink {
+      animation: blink-animation 1s steps(2, start) infinite;
+    }
+
+    @keyframes blink-animation {
+      to {
+        visibility: hidden;
+      }
+    }
+
+    .system-health {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .health-indicator {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: #00AA00;
+      margin-right: 0.5rem;
+    }
+
+    .health-critical {
+      background-color: #AA0000;
+    }
+
+    .health-warning {
+      background-color: #AAAA00;
+    }
+
+    .health-good {
+      background-color: #00AA00;
+    }
+
+    .version-info {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: right;
+      margin-top: 0.5rem;
+    }
+
+    /* CRT effect */
+    .screen::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* Scanlines effect */
+    .screen::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      pointer-events: none;
+    }
+  </style>
 </head>
 <body>
-    <h1>WebNux Unified Extensible Firmware Interface</h1>
-
-    <div id="datetime" style="font-family: monospace; font-size: 1.2rem; margin-bottom: 1rem;"></div>
-
-    <div id="system-info" style="font-family: monospace; margin-bottom: 1rem;">
-        <div>Firmware Version: 1.0.3</div>
-        <div>System: WebNux Model X1000</div>
-        <div>CPU: WebNux Processor 3.2 GHz (8 cores)</div>
-        <div>Memory: 16 GB DDR5</div>
-        <div>Secure Boot: Enabled</div>
+    <br>
+    <br>
+    <br> 
+    <br>
+  <div class="screen">
+    <div class="header-logo">
+      <div class="logo">
+        <img src="Tux.svg" alt="tux">
+      </div>
+      <h1>WebNux Unified Extensible Firmware Interface</h1>
     </div>
 
-    <div>
-        <h2>Boot Manager</h2>
-        <ul id="boot-options" style="list-style: none; padding-left: 0; font-family: monospace; font-size: 1rem;">
-            <li data-index="0">1. WebNux Linux</li>
-            <li data-index="1">2. Recovery Mode</li>
-            <li data-index="2">3. EFI Shell</li>
-            <li data-index="3">4. Network Boot</li>
+    <div id="datetime"></div>
+    
+    <div class="status-bar">
+      <div>CPU: 32°C</div>
+      <div>Fan: 1200 RPM</div>
+      <div>Power: AC</div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="boot">Boot Manager</div>
+      <div class="tab" data-tab="info">System Info</div>
+      <div class="tab" data-tab="diag">Diagnostics</div>
+    </div>
+
+    <div id="boot-tab" class="tab-content active">
+      <div class="box">
+        <h2 style="text-align:center; margin-top:0; color:#FFFFFF;">Boot Manager</h2>
+        <ul id="boot-options" class="boot-menu">
+          <li data-index="F1" class="selected">WebNux Linux</li>
+          <li data-index="F2">Recovery Mode</li>
+          <li data-index="F3">EFI Shell</li>
+          <li data-index="F4">Network Boot</li>
+          <li data-index="F5">Boot from USB</li>
         </ul>
+      </div>
+      
+      <div class="box">
+        <div class="system-health">
+          <div class="health-indicator health-good"></div>
+          <div>Boot Device: SSD (500GB) <span style="color:#00FF00;">✓ Ready</span></div>
+          
+          <div class="health-indicator health-warning"></div>
+          <div>CMOS Battery: <span style="color:#FFFF00;">Low (2.8V)</span></div>
+          
+          <div class="health-indicator health-good"></div>
+          <div>Secure Boot: <span style="color:#00FF00;">Enabled</span></div>
+        </div>
+      </div>
     </div>
 
-    <div style="margin-top: 2rem; font-family: monospace; font-size: 0.9rem;">
-        Press 2 to enter setup | Press ESC to exit | ↑↓ to navigate | Enter to boot
+    <div id="info-tab" class="tab-content">
+      <div class="box system-info">
+        <div><span>Firmware Version:</span> 1.0.3 (Build 2025-03-14)</div>
+        <div><span>BIOS Date:</span> 2025-03-14</div>
+        <div><span>System:</span> WebNux Model X1000</div>
+        <div><span>Serial Number:</span> WNX10005437891</div>
+        <div><span>CPU:</span> WebNux Processor 3.2 GHz (8 cores)</div>
+        <div><span>CPU Cache:</span> 16MB L3</div>
+        <div><span>Memory:</span> 16 GB DDR5 4800MHz</div>
+        <div><span>Memory Slots:</span> 2/4 used</div>
+        <div><span>Primary Disk:</span> NVMe SSD 500GB</div>
+        <div><span>MAC Address:</span> 00:1B:44:11:3A:B7</div>
+        <div><span>TPM Version:</span> 2.0</div>
+        <div><span>Secure Boot:</span> Enabled</div>
+      </div>
+      
+      <div class="version-info">WebNux UEFI v1.0.3 - Copyright © 2025 WebNux Systems</div>
     </div>
 
-    <script>
-        const datetimeDiv = document.getElementById('datetime');
-        const options = document.querySelectorAll('#boot-options li');
-        let selectedIndex = 0;
+    <div id="diag-tab" class="tab-content">
+      <div class="box">
+        <h2 style="text-align:center; margin-top:0; color:#FFFFFF;">System Diagnostics</h2>
+        
+        <div id="mem-test-section">
+          <h3 style="color:#FFFFFF;">Memory Test</h3>
+          <div class="progress-container">
+            <div class="progress-bar" id="mem-progress">
+              <div class="progress-text">0%</div>
+            </div>
+          </div>
+          <button id="start-mem-test" style="padding:5px 10px; margin:10px 0;">Start Memory Test</button>
+          <div id="mem-test-result" style="margin-top:10px;"></div>
+        </div>
+        
+        <div style="margin-top:20px;">
+          <h3 style="color:#FFFFFF;">System Status</h3>
+          <div class="system-health">
+            <div class="health-indicator health-good"></div>
+            <div>CPU: <span style="color:#00FF00;">Operational</span></div>
+            
+            <div class="health-indicator health-good"></div>
+            <div>Memory: <span style="color:#00FF00;">16GB Detected</span></div>
+            
+            <div class="health-indicator health-good"></div>
+            <div>Storage: <span style="color:#00FF00;">Healthy</span></div>
+            
+            <div class="health-indicator health-warning"></div>
+            <div>CMOS Battery: <span style="color:#FFFF00;">Low (2.8V)</span></div>
+            
+            <div class="health-indicator health-good"></div>
+            <div>Fans: <span style="color:#00FF00;">Operational</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        function updateDateTime() {
-            const now = new Date();
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            const ss = String(now.getSeconds()).padStart(2, '0');
-            const yyyy = now.getFullYear();
-            const MM = String(now.getMonth() + 1).padStart(2, '0');
-            const dd = String(now.getDate()).padStart(2, '0');
+    <div class="footer">
+      <div><span class="key">Tab</span> Switch tab</div>
+      <div><span class="key">↑↓</span> Navigate</div>
+      <div><span class="key">Enter</span> Select</div>
+      <div><span class="key">F10</span> Save & Exit</div>
+      <div><span class="key">ESC</span> Exit</div>
+    </div>
+  </div>
 
-            datetimeDiv.textContent = `Date: ${yyyy}-${MM}-${dd}   Time: ${hh}:${mm}:${ss}`;
+  <script>
+    const datetimeDiv = document.getElementById('datetime');
+    const options = document.querySelectorAll('#boot-options li');
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const startMemTestBtn = document.getElementById('start-mem-test');
+    const memProgress = document.getElementById('mem-progress');
+    const memTestResult = document.getElementById('mem-test-result');
+    
+    let selectedIndex = 0;
+    let memTestRunning = false;
+
+    function updateDateTime() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      const yyyy = now.getFullYear();
+      const MM = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      datetimeDiv.innerHTML = `Date: <strong>${yyyy}-${MM}-${dd}</strong> &nbsp; Time: <strong>${hh}:${mm}:${ss}</strong>`;
+    }
+
+    function highlightSelected() {
+      options.forEach((opt, i) => {
+        opt.classList.toggle('selected', i === selectedIndex);
+      });
+    }
+
+    function switchTab(tabName) {
+      tabs.forEach(tab => {
+        tab.classList.toggle('active', tab.getAttribute('data-tab') === tabName);
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.toggle('active', content.id === `${tabName}-tab`);
+      });
+    }
+    
+    function runMemoryTest() {
+      if (memTestRunning) return;
+      
+      memTestRunning = true;
+      startMemTestBtn.disabled = true;
+      memTestBtn.textContent = "Testing...";
+      memTestResult.innerHTML = "<span class='blink'>Testing memory...</span>";
+      
+      let progress = 0;
+      memProgress.style.width = "0%";
+      
+      const memTestInterval = setInterval(() => {
+        progress += 1;
+        memProgress.style.width = `${progress}%`;
+        memProgress.querySelector('.progress-text').textContent = `${progress}%`;
+        
+        if (progress >= 100) {
+          clearInterval(memTestInterval);
+          memTestRunning = false;
+          startMemTestBtn.disabled = false;
+          startMemTestBtn.textContent = "Start Memory Test";
+          memTestResult.innerHTML = "<span style='color:#00FF00;'>✓ Memory test completed successfully. No errors found.</span>";
         }
+      }, 50);
+    }
 
-        function highlightSelected() {
-            options.forEach((opt, i) => {
-                if(i === selectedIndex) {
-                    opt.style.backgroundColor = 'gray';
-                    opt.style.color = 'white';
-                } else {
-                    opt.style.backgroundColor = '';
-                    opt.style.color = '';
-                }
-            });
+    window.addEventListener('keydown', (e) => {
+      // Boot option navigation
+      if (document.getElementById('boot-tab').classList.contains('active')) {
+        if (e.key === 'ArrowDown') {
+          selectedIndex = (selectedIndex + 1) % options.length;
+          highlightSelected();
         }
-
-        window.addEventListener('keydown', (e) => {
-            if(e.key === 'ArrowDown') {
-                selectedIndex = (selectedIndex + 1) % options.length;
-                highlightSelected();
-            }
-            if(e.key === 'ArrowUp') {
-                selectedIndex = (selectedIndex - 1 + options.length) % options.length;
-                highlightSelected();
-            }
-            if(e.key === 'Enter') {
-                alert(`Booting: ${options[selectedIndex].textContent.trim()}`);
-            }
-            if(e.key === 'Escape') {
-                alert('Exiting UEFI Boot Manager');
-            }
-            if(e.key === 'F2') {
-                alert('Entering UEFI Setup');
-            }
+        if (e.key === 'ArrowUp') {
+          selectedIndex = (selectedIndex - 1 + options.length) % options.length;
+          highlightSelected();
+        }
+        if (e.key === 'Enter') {
+          const selectedOption = options[selectedIndex].textContent.trim();
+          alert(`Booting: ${selectedOption}`);
+        }
+      }
+      
+      // Tab switching
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        let activeTabIndex = 0;
+        tabs.forEach((tab, index) => {
+          if (tab.classList.contains('active')) {
+            activeTabIndex = index;
+          }
         });
-
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
+        
+        const nextTabIndex = (activeTabIndex + 1) % tabs.length;
+        switchTab(tabs[nextTabIndex].getAttribute('data-tab'));
+      }
+      
+      // Function keys
+      if (e.key === 'F1' && document.getElementById('boot-tab').classList.contains('active')) {
+        selectedIndex = 0;
         highlightSelected();
-    </script>
+        setTimeout(() => {
+          alert('Booting: WebNux Linux');
+        }, 100);
+      }
+      
+      if (e.key === 'F10') {
+        alert('Saving configuration and exiting...');
+      }
+      
+      if (e.key === 'Escape') {
+        alert('Exiting UEFI Boot Manager');
+      }
+    });
+
+    // Tab click events
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        switchTab(tab.getAttribute('data-tab'));
+      });
+    });
+    
+    // Memory test button
+    startMemTestBtn.addEventListener('click', runMemoryTest);
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    highlightSelected();
+  </script>
 </body>
 </html>
