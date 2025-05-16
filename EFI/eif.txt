@@ -1,0 +1,64 @@
+🔧 Systeminformation & Konfiguration
+Befehl	            Beschreibung
+---------------------------------------------------------
+ver	                Zeigt die Version der EFI Shell an
+memmap	            Zeigt die Speicherbelegung an
+dmpstore	        Zeigt oder bearbeitet NVRAM-Variablen
+set	                Listet oder ändert Umgebungsvariablen
+bcfg	            Konfiguriert Boot- und Treiber-Einträge
+
+```
+
+💾 Dateisystem & Navigation
+Befehl	            Beschreibung
+---------------------------------------------------------
+map	                Listet alle verfügbaren Geräte und Partitionen
+fs0:	            Wechselt zu Dateisystem 0 (Partition)
+cd	                Wechselt Verzeichnis
+ls / dir	        Listet Verzeichnisinhalte
+mkdir	            Erstellt ein neues Verzeichnis
+rm / del	        Löscht Datei(en)
+cp	                Kopiert Dateien
+mv	                Verschiebt oder benennt Dateien um
+type / cat	        Zeigt den Inhalt einer Datei an
+
+```
+
+🛠️ Diagnose & Wartung
+Befehl	            Beschreibung
+---------------------------------------------------------
+drivers	            Listet geladene Treiber
+devices	            Zeigt erkannte Geräte
+ifconfig	        Netzwerkkonfiguration anzeigen oder ändern
+ping	            Ping-Befehl zum Testen der Netzwerkverbindung
+reconnect	        Verbindet ein Gerät neu
+exit	            Verlässt die EFI Shell
+
+```
+
+🔌 Boot & Laden
+Befehl	            Beschreibung
+---------------------------------------------------------
+load	            Lädt einen EFI-Treiber
+unload	            Entlädt einen geladenen Treiber
+boot	            Startet einen EFI-Bootloader (z. B. bootx64.efi)
+reset	            Startet das System neu
+
+```
+
+🧪 Skripting & Automatisierung
+Befehl	            Beschreibung
+---------------------------------------------------------
+echo	            Gibt Text aus
+pause	            Wartet auf Tastendruck
+goto	            Springt zu einer Sprungmarke in einem Skript
+if, else, endif	    Bedingte Anweisungen im Skript
+
+```
+
+📦 Sonstiges / Tools
+Befehl	            Beschreibung
+---------------------------------------------------------
+help	            Zeigt Hilfe zu einem Befehl
+cls	                Löscht den Bildschirm
+time / date	        Zeigt oder setzt Uhrzeit und Datum
