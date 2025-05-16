@@ -1,0 +1,35 @@
+body {
+    background-color: black;
+    color: #adabab;
+    font-family: monospace;
+    font-size: 20px;
+    padding: 20px;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.white {
+    color: white;
+}
+
+#shell {
+    white-space: pre-wrap;
+}
+
+.cursor {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}

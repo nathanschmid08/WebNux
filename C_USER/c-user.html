@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WebNux</title>
+</head>
+<body>
+  <h1>Welcome to WEBNUX</h1>
+  <p>Configure a user</p>
+
+  <form id="userForm">
+    <label for="avatar">Upload your image:</label><br>
+    <input type="file" id="avatar" accept="image/*" required><br><br>
+
+    <label for="username">Name:</label><br>
+    <input type="text" id="username" required><br><br>
+
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" required><br><br>
+
+    <label for="hint">Password hint:</label><br>
+    <input type="text" id="hint"><br><br>
+
+    <label for="q1">Security Question 1: What is your pet’s name?</label><br>
+    <input type="text" id="q1" required><br><br>
+
+    <label for="q2">Security Question 2: What is your mother’s maiden name?</label><br>
+    <input type="text" id="q2" required><br><br>
+
+    <label for="q3">Security Question 3: What was your first school?</label><br>
+    <input type="text" id="q3" required><br><br>
+
+    <button type="submit">Create Account</button>
+  </form>
+
+  <div id="output"></div>
+
+  <script>
+    const form = document.getElementById('userForm');
+    const output = document.getElementById('output');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const avatar = document.getElementById('avatar').files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const userData = {
+          name: document.getElementById('username').value,
+          password: document.getElementById('password').value,
+          hint: document.getElementById('hint').value,
+          security: {
+            q1: document.getElementById('q1').value,
+            q2: document.getElementById('q2').value,
+            q3: document.getElementById('q3').value,
+          },
+          avatarDataURL: e.target.result
+        };
+
+        output.innerHTML = `
+          <h2>Account Created!</h2>
+          <img src="${userData.avatarDataURL}" width="100"><br>
+          Name: ${userData.name}<br>
+          Password: ${userData.password}<br>
+          Hint: ${userData.hint}<br>
+          Security Answers: ${userData.security.q1}, ${userData.security.q2}, ${userData.security.q3}
+        `;
+
+        console.log('User data:', userData);
+      };
+
+      if (avatar) {
+        reader.readAsDataURL(avatar);
+      } else {
+        alert("Please upload an image.");
+      }
+    });
+  </script>
+</body>
+</html>
