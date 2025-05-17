@@ -3,172 +3,436 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WebNux</title>
+  <title>WebNux Login</title>
   <style>
+    
     * {
-        cursor: url('main.cur') 16 16, auto;
-    }
-
-    body {
+      cursor: url('main.cur') 10 10, auto;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       font-family: sans-serif;
-      background-color: #f4f4f4;
-      color: #333;
-      padding: 20px;
+
     }
-  
+    
+    body {
+      background-image: url('https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/windows.svg'), linear-gradient(to right, #0078d7, #005a9e);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-blend-mode: soft-light;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+      z-index: -1;
+    }
+    
+    .login-container {
+      width: 100%;
+      max-width: 450px;
+      background-color: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
     h1 {
-      color: #222;
+      font-weight: 300;
+      font-size: 28px;
+      margin-bottom: 5px;
     }
-  
-    form {
-      max-width: 400px;
+    
+    .subtitle {
+      font-weight: 300;
+      font-size: 16px;
+      opacity: 0.8;
+      margin-bottom: 30px;
     }
-  
-    .image-upload {
+    
+    .avatar-upload {
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background-color: #ddd;
+      background-color: rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 40px;
-      color: #777;
+      color: white;
       cursor: pointer;
-      margin-bottom: 20px;
+      margin: 0 auto 30px;
       overflow: hidden;
       position: relative;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
     }
-  
-    .image-upload img {
+    
+    .avatar-upload:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+    
+    .avatar-upload img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-  
+    
     #avatar {
       display: none;
     }
-  
+    
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    
     label {
       display: block;
-      margin-top: 10px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      opacity: 0.9;
     }
-  
-    input[type="text"],
-    input[type="password"] {
+    
+    input {
       width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 12px 15px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      color: white;
+      font-size: 16px;
+      transition: all 0.3s ease;
     }
-  
+    
+    input:focus {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      outline: none;
+    }
+    
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .security-questions {
+      margin-top: 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 20px;
+    }
+    
+    .security-title {
+      text-align: left;
+      margin-bottom: 15px;
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
     button {
-      padding: 10px 15px;
-      background-color: #007acc;
+      width: 100%;
+      padding: 14px;
+      background-color: #0078d7;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
     }
-  
+    
     button:hover {
+      background-color: #0086f0;
+    }
+    
+    button:active {
       background-color: #005fa3;
     }
+    
+    .time-info {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 52px;
+      font-weight: 300;
+    }
+    
+    .date-info {
+      position: absolute;
+      bottom: 80px;
+      left: 20px;
+      font-size: 20px;
+      font-weight: 300;
+      opacity: 0.8;
+    }
+    
+    .power-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      width: auto;
+      margin: 0;
+      padding: 10px;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+    
+    .power-btn:hover {
+      opacity: 1;
+      background: none;
+    }
+    
+    .power-icon {
+      width: 24px;
+      height: 24px;
+    }
+    
+    #output {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+    
+    .success-message {
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .success-message img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      border: 3px solid white;
+    }
+    
+    .webcam-icon {
+      font-size: 20px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .sections-container {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .section {
+      flex: 1;
+    }
+    
+    .section:first-child {
+      margin-right: 15px;
+    }
   </style>
-  
-  
 </head>
 <body>
-  <h1>Welcome to WEBNUX</h1>
-  <p>Configure a user</p>
-
-  <form id="userForm">
-    <label for="avatar" class="image-upload" id="uploadPreview">
-        +
-    </label>
-     <input type="file" id="avatar" accept="image/*" required>
+  <div class="login-container">
+    
+    <h1>Welcome to WebNux</h1>
+    <p class="subtitle">Create your account to get started</p>
+    
+    <form id="userForm">
+      <label for="avatar" class="avatar-upload" id="uploadPreview">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="white"/>
+        </svg>
+      </label>
+      <input type="file" id="avatar" accept="image/*" required>
       
-
-    <label for="username">Name:</label><br>
-    <input type="text" id="username" required><br><br>
-
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" required><br><br>
-
-    <label for="hint">Password hint:</label><br>
-    <input type="text" id="hint"><br><br>
-
-    <label for="q1">Security Question 1: What is your pet’s name?</label><br>
-    <input type="text" id="q1" required><br><br>
-
-    <label for="q2">Security Question 2: What is your mother’s maiden name?</label><br>
-    <input type="text" id="q2" required><br><br>
-
-    <label for="q3">Security Question 3: What was your first school?</label><br>
-    <input type="text" id="q3" required><br><br>
-
-    <button type="submit">Create Account</button>
-  </form>
-
-  <div id="output"></div>
+      <div class="sections-container">
+        <div class="section">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter username" required autofocus>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter password" required>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="hint">Password hint (optional)</label>
+        <input type="text" id="hint" placeholder="Enter a hint to remember your password">
+      </div>
+      
+      <div class="security-questions">
+        <p class="security-title">Security Questions</p>
+        
+        <div class="form-group">
+          <label for="q1">What is your pet's name?</label>
+          <input type="text" id="q1" placeholder="Answer" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="q2">What is your mother's maiden name?</label>
+          <input type="text" id="q2" placeholder="Answer" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="q3">What was your first school?</label>
+          <input type="text" id="q3" placeholder="Answer" required>
+        </div>
+      </div>
+      
+      <button type="submit" id="submitBtn">Create Account</button>
+    </form>
+    
+    <div id="output"></div>
+  </div>
+  
+  <div class="time-info" id="time">12:00</div>
+  <div class="date-info" id="date">Saturday, May 17</div>
+  
+  <button class="power-btn">
+    <svg class="power-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13 3H11V13H13V3ZM17.83 5.17L16.41 6.59C17.99 7.86 19 9.81 19 12C19 15.87 15.87 19 12 19C8.13 19 5 15.87 5 12C5 9.81 6.01 7.86 7.58 6.58L6.17 5.17C4.23 6.82 3 9.26 3 12C3 16.97 7.03 21 12 21C16.97 21 21 16.97 21 12C21 9.26 19.77 6.82 17.83 5.17Z" fill="white"/>
+    </svg>
+  </button>
 
   <script>
+    // Update time and date
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      
+      hours = hours % 12;
+      hours = hours ? hours : 12; // Convert 0 to 12
+      
+      document.getElementById('time').textContent = `${hours}:${minutes} ${ampm}`;
+      
+      const options = { weekday: 'long', month: 'long', day: 'numeric' };
+      document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
+    }
+    
+    updateClock();
+    setInterval(updateClock, 60000);
+    
+    // Avatar upload preview
     const avatarInput = document.getElementById('avatar');
     const uploadPreview = document.getElementById('uploadPreview');
 
     avatarInput.addEventListener('change', function () {
-    const file = avatarInput.files[0];
-    if (file) {
+      const file = avatarInput.files[0];
+      if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
-        uploadPreview.innerHTML = `<img src="${e.target.result}" alt="Avatar">`;
+          uploadPreview.innerHTML = `<img src="${e.target.result}" alt="Avatar">`;
         };
         reader.readAsDataURL(file);
-    }
+      }
     });
 
+    // Form submission
     const form = document.getElementById('userForm');
     const output = document.getElementById('output');
+    const submitBtn = document.getElementById('submitBtn');
 
     form.addEventListener('submit', function(event) {
       event.preventDefault();
+      
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<div class="loading-spinner"></div> Creating Account...';
+      submitBtn.disabled = true;
+      
+      setTimeout(() => {
+        const avatar = document.getElementById('avatar').files[0];
+        const username = document.getElementById('username').value;
+        
+        if (!avatar) {
+          output.innerHTML = `<p style="color: #ff6b6b; margin-top: 15px;">Please upload a profile picture</p>`;
+          submitBtn.innerHTML = originalBtnText;
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const userData = {
+            name: username,
+            password: document.getElementById('password').value,
+            hint: document.getElementById('hint').value,
+            security: {
+              q1: document.getElementById('q1').value,
+              q2: document.getElementById('q2').value,
+              q3: document.getElementById('q3').value,
+            },
+            avatarDataURL: e.target.result
+          };
 
-      const avatar = document.getElementById('avatar').files[0];
-      const reader = new FileReader();
-
-      reader.onload = function(e) {
-        const userData = {
-          name: document.getElementById('username').value,
-          password: document.getElementById('password').value,
-          hint: document.getElementById('hint').value,
-          security: {
-            q1: document.getElementById('q1').value,
-            q2: document.getElementById('q2').value,
-            q3: document.getElementById('q3').value,
-          },
-          avatarDataURL: e.target.result
+          // Hide form and show success message
+          form.style.display = 'none';
+          output.innerHTML = `
+            <div class="success-message">
+              <img src="${userData.avatarDataURL}" alt="User Avatar">
+              <h2>Account Created!</h2>
+              <p>Welcome, ${userData.name}! Your account has been successfully created.</p>
+              <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">You'll be redirected to the login screen shortly...</p>
+            </div>
+          `;
+          
+          console.log('User data:', userData);
         };
 
-        output.innerHTML = `
-          <h2>Account Created!</h2>
-          <img src="${userData.avatarDataURL}" width="100"><br>
-          Name: ${userData.name}<br>
-          Password: ${userData.password}<br>
-          Hint: ${userData.hint}<br>
-          Security Answers: ${userData.security.q1}, ${userData.security.q2}, ${userData.security.q3}
-        `;
-
-        console.log('User data:', userData);
-      };
-
-      if (avatar) {
         reader.readAsDataURL(avatar);
-      } else {
-        alert("Please upload an image.");
-      }
+      }, 1500);
     });
   </script>
 </body>
