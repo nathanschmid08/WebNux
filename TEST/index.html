@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Desktop Web</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #1e1e1e;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    .taskbar {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: #2c2c2c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .app-icon {
+      width: 40px;
+      height: 40px;
+      background: #555;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      font-size: 14px;
+    }
+
+    .window {
+      position: absolute;
+      width: 400px;
+      height: 300px;
+      background: white;
+      border: 1px solid #aaa;
+      resize: both;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .window-header {
+      background: #333;
+      color: white;
+      padding: 5px;
+      cursor: move;
+      font-size: 14px;
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100% - 25px);
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="taskbar">
+    <div class="app-icon" onclick="openApp('Browser', 'browser.html')">🌐</div>
+    <div class="app-icon" onclick="openApp('Editor', 'notes.html')">📝</div>
+  </div>
+
+  <script>
+    let z = 1;
+
+    function openApp(title, url) {
+      const win = document.createElement('div');
+      win.className = 'window';
+      win.style.top = '50px';
+      win.style.left = '50px';
+      win.style.zIndex = z++;
+
+      win.innerHTML = `
+        <div class="window-header">${title}</div>
+        <iframe src="${url}"></iframe>
+      `;
+
+      makeDraggable(win);
+      document.body.appendChild(win);
+    }
+
+    function makeDraggable(el) {
+      const header = el.querySelector('.window-header');
+      let offsetX = 0, offsetY = 0, isDragging = false;
+
+      header.addEventListener('mousedown', e => {
+        isDragging = true;
+        offsetX = e.clientX - el.offsetLeft;
+        offsetY = e.clientY - el.offsetTop;
+        el.style.zIndex = z++;
+      });
+
+      document.addEventListener('mousemove', e => {
+        if (isDragging) {
+          el.style.left = `${e.clientX - offsetX}px`;
+          el.style.top = `${e.clientY - offsetY}px`;
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+    }
+  </script>
+</body>
+</html>
