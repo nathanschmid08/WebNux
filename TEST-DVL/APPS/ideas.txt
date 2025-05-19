@@ -1,0 +1,33 @@
+- Sticky notes         -> For small notes,
+
+-  Notes               -> For real Text files,
+
+- Calculator app       -> For doing calculations,
+
+- Clock app            -> Timer, Stopwatch, Different time zones,
+
+- Code editor          -> For programming,
+
+- Contacts app         -> For managing your contacts,
+
+- Defender screen      -> For protection from malware,
+
+- Disk-Manager         -> For deleting unused files,
+
+- Firewall Settings    -> For giving the user a feeling (Mocked),
+
+- Fox Browser          -> To surf from the application (will use Chromium),
+
+- Mail                 -> Real Mail Client (no idea how to implement that),
+
+- Paint                -> For creativity,
+
+- Settings             -> For user preferences,
+
+- System Manager       -> For checking System health,
+
+- Taskmanager          -> For stopping tasks,
+
+- Terminal             -> For obvious reasons,
+
+- User setup           -> For first time users
