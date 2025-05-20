@@ -37,3 +37,20 @@ Code editor             -> For programming
 🌐 Internet & Kommunikation
 
 Fox Browser             -> To surf from the application (will use Chromium)
+
+
+MORE:
+
+🖥️ System & Sicherheit
+
+Update Manager          → Zeigt an, ob Updates verfügbar sind (ggf. nur Fake-UI).
+Log Viewer              → Zum Anzeigen von System-Logs (kann lokale Textdateien parsen).
+Process Monitor         → Detaillierte Ansicht laufender Prozesse mit CPU/RAM.
+Permissions Manager     → (Fake) Darstellung von App-Berechtigungen.
+Backup Tool             → Simuliert Datensicherung (z. B. einfach Ordner kopieren).
+Recovery Mode           → Nur UI, um „Systemrettung“ zu simulieren.
+
+
+Weather App             → Echtzeit-Wetterdaten (z. B. via API oder gemockt).
+
+Hex Editor              → Anzeige und Bearbeitung von Binärdateien.
