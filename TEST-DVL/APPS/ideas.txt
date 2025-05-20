@@ -1,33 +1,39 @@
-- Sticky notes         -> For small notes,
+🖥️ System & Sicherheit
 
--  Notes               -> For real Text files,
+System Manager          -> For checking system health
+Taskmanager             -> For stopping tasks
+Disk-Manager            -> For deleting unused files
+Defender screen         -> For protection from malware
+Firewall Settings       -> For giving the user a feeling (Mocked)
 
-- Calculator app       -> For doing calculations,
+```
 
-- Clock app            -> Timer, Stopwatch, Different time zones,
+⚙️ Systemeinrichtung & Benutzerverwaltung
 
-- Code editor          -> For programming,
+User setup              -> For first time users
+Settings                -> For user preferences
 
-- Contacts app         -> For managing your contacts,
+```
 
-- Defender screen      -> For protection from malware,
+📁 Produktivität & Tools
 
-- Disk-Manager         -> For deleting unused files,
+Sticky notes            -> For small notes
+Notes                   -> For real text files
+Paint                   -> For creativity
+Calculator app          -> For doing calculations
+Clock app               -> Timer, Stopwatch, Different time zones
+Contacts app            -> For managing your contacts
+Mail                    -> Real Mail Client (no idea how to implement that)
 
-- Firewall Settings    -> For giving the user a feeling (Mocked),
+```
 
-- Fox Browser          -> To surf from the application (will use Chromium),
+💻 Entwicklung & Technik
 
-- Mail                 -> Real Mail Client (no idea how to implement that),
+Terminal                -> For obvious reasons
+Code editor             -> For programming
 
-- Paint                -> For creativity,
+```
 
-- Settings             -> For user preferences,
+🌐 Internet & Kommunikation
 
-- System Manager       -> For checking System health,
-
-- Taskmanager          -> For stopping tasks,
-
-- Terminal             -> For obvious reasons,
-
-- User setup           -> For first time users
+Fox Browser             -> To surf from the application (will use Chromium)
