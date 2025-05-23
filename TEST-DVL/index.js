@@ -1,15 +1,17 @@
 let z = 1;
 
-function openApp(title, url) {
+function openApp(title, url, width = 400, height = 300) {
   const win = document.createElement('div');
   win.className = 'window';
   win.style.top = '50px';
   win.style.left = '50px';
   win.style.zIndex = z++;
+  win.style.width = `${width}px`;
+  win.style.height = `${height}px`;
 
   win.innerHTML = `
     <div class="window-header">${title}</div>
-    <iframe src="${url}"></iframe>
+    <iframe src="${url}" style="width: 100%; height: calc(100% - 30px); border: none;"></iframe>
   `;
 
   makeDraggable(win);
