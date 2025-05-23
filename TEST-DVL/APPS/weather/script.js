@@ -3,7 +3,7 @@ async function getWeather() {
     const weatherResult = document.getElementById('weatherResult');
 
     if (!city) {
-        weatherResult.innerHTML = 'Bitte gib eine Stadt ein.';
+        weatherResult.innerHTML = 'Please enter a city.';
         return;
     }
 
@@ -13,7 +13,7 @@ async function getWeather() {
         const geoData = await geoResponse.json();
 
         if (!geoData.results || geoData.results.length === 0) {
-            weatherResult.innerHTML = 'Stadt nicht gefunden.';
+            weatherResult.innerHTML = 'City not found.';
             return;
         }
 
@@ -24,15 +24,34 @@ async function getWeather() {
         const weatherData = await weatherResponse.json();
 
         const { temperature, windspeed, weathercode } = weatherData.current_weather;
+        const weatherImage = getWeatherImage(weathercode);
 
         weatherResult.innerHTML = `
         <h2>${name}, ${country}</h2>
-        <p>🌡️ Temperatur: ${temperature} °C</p>
-        <p>💨 Windgeschwindigkeit: ${windspeed} km/h</p>
-        <p>🌥️ Wettercode: ${weathercode}</p>
-      `;
+        <p>
+            <img src="weather/temperature.png" alt="Temperatur" style="width: 20px; vertical-align: middle; margin-right: 8px;">
+            Temperatur: ${temperature} °C
+        </p>
+        <p>
+            <img src="weather/wind.png" alt="Wind" style="width: 20px; vertical-align: middle; margin-right: 8px;">
+            Windgeschwindigkeit: ${windspeed} km/h
+        </p>
+        <img src="weather/${weatherImage}" alt="Wetterbild" style="width: 100px; height: auto;">
+    `;
+    
     } catch (error) {
-        weatherResult.innerHTML = 'Fehler beim Abrufen der Wetterdaten.';
+        weatherResult.innerHTML = 'Error with the API call.';
         console.error(error);
     }
+}
+
+function getWeatherImage(code) {
+    if (code === 0) return 'sun.png';
+    if ([1, 2, 3].includes(code)) return 'sun-cloudy-rain.png'; 
+    if ([61, 63, 65, 80, 81, 82].includes(code)) return 'rain-soft.png';
+    if ([66, 67, 95].includes(code)) return 'rain-thunder.png'; 
+    if ([96, 99].includes(code)) return 'rain-hard.png'; 
+    if ([51, 53, 55].includes(code)) return 'rain-soft.png'; 
+
+    return 'sun-cloudy-rain.png'; 
 }
