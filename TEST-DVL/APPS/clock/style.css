@@ -235,8 +235,10 @@ body {
 }
 
 .alarm-list {
-    space-y: 15px;
-}
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Abstand zwischen den Elementen */
+}  
 
 .alarm-item {
     background: rgba(255, 255, 255, 0.1);
