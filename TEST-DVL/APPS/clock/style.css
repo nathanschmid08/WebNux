@@ -1,0 +1,390 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 80px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    gap: 20px;
+}
+
+.nav-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 24px;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.nav-item.active {
+    background: linear-gradient(135deg, #007AFF, #0051D5);
+    box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.content-section {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.content-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Clock Section */
+.clock-container {
+    text-align: center;
+}
+
+.digital-time {
+    font-size: 4rem;
+    font-weight: 200;
+    margin-bottom: 10px;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #fff, #ccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.date-display {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 40px;
+}
+
+.analog-clock {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border: 8px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+    box-shadow: 
+        0 0 50px rgba(255, 255, 255, 0.1),
+        inset 0 0 50px rgba(255, 255, 255, 0.05);
+    margin: 0 auto;
+}
+
+.clock-numbers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.number {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    border-radius: 6px;
+    transition: transform 0.1s ease-out;
+}
+
+.hour-hand {
+    height: 70px;
+    width: 6px;
+    background: linear-gradient(180deg, #fff, #ccc);
+    margin-left: -3px;
+}
+
+.minute-hand {
+    height: 100px;
+    width: 4px;
+    background: linear-gradient(180deg, #fff, #ddd);
+    margin-left: -2px;
+}
+
+.second-hand {
+    height: 120px;
+    width: 2px;
+    background: linear-gradient(180deg, #ff3b30, #ff6b60);
+    margin-left: -1px;
+}
+
+.center-dot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle, #fff, #ccc);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Alarm Section */
+.alarm-container {
+    max-width: 500px;
+    width: 100%;
+}
+
+.alarm-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.alarm-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.alarm-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 15px 20px;
+    color: white;
+    font-size: 1.1rem;
+    width: 100%;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.alarm-input:focus {
+    outline: none;
+    border-color: #007AFF;
+    box-shadow: 0 0 20px rgba(0, 122, 255, 0.3);
+}
+
+.alarm-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    background: linear-gradient(135deg, #007AFF, #0051D5);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn.danger {
+    background: linear-gradient(135deg, #ff3b30, #d70015);
+}
+
+.btn.danger:hover {
+    box-shadow: 0 8px 25px rgba(255, 59, 48, 0.3);
+}
+
+.alarm-list {
+    space-y: 15px;
+}
+
+.alarm-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.alarm-time {
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+.alarm-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.alarm-toggle {
+    width: 50px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.alarm-toggle.active {
+    background: #34C759;
+}
+
+.alarm-toggle::after {
+    content: '';
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s ease;
+}
+
+.alarm-toggle.active::after {
+    transform: translateX(20px);
+}
+
+/* Stopwatch Section */
+.stopwatch-container {
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.stopwatch-display {
+    font-size: 5rem;
+    font-weight: 200;
+    font-family: 'SF Mono', Monaco, monospace;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #fff, #ccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -3px;
+}
+
+.stopwatch-controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.stopwatch-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.stopwatch-btn:hover {
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.stopwatch-btn.start {
+    border-color: #34C759;
+    color: #34C759;
+}
+
+.stopwatch-btn.stop {
+    border-color: #ff3b30;
+    color: #ff3b30;
+}
+
+.laps-container {
+    max-height: 200px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.lap-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lap-item:last-child {
+    border-bottom: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+    }
+    
+    .nav-item {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .digital-time {
+        font-size: 3rem;
+    }
+    
+    .analog-clock {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .stopwatch-display {
+        font-size: 3.5rem;
+    }
+}

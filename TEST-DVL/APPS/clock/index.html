@@ -1,98 +1,81 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Apple Style Clock</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .clock {
-      position: relative;
-      width: 300px;
-      height: 300px;
-      border: 8px solid #fff;
-      border-radius: 50%;
-      background: #000;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-    }
-
-    .hand {
-      position: absolute;
-      bottom: 50%;
-      left: 50%;
-      transform-origin: bottom center;
-      transform: rotate(90deg);
-      border-radius: 6px;
-    }
-
-    .hour {
-      height: 70px;
-      width: 6px;
-      background-color: #fff;
-    }
-
-    .minute {
-      height: 100px;
-      width: 4px;
-      background-color: #ccc;
-    }
-
-    .second {
-      height: 120px;
-      width: 2px;
-      background-color: red;
-    }
-
-    .center-dot {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background-color: white;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Desktop Clock App</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="clock">
-    <div class="hand hour" id="hour"></div>
-    <div class="hand minute" id="minute"></div>
-    <div class="hand second" id="second"></div>
-    <div class="center-dot"></div>
-  </div>
+<div class="app-container">
+    <div class="sidebar">
+        <div class="nav-item active" data-section="clock">🕐</div>
+        <div class="nav-item" data-section="alarm">⏰</div>
+        <div class="nav-item" data-section="stopwatch">⏱️</div>
+    </div>
+    
+    <div class="main-content">
+        <!-- Clock Section -->
+        <div class="content-section active" id="clock">
+            <div class="clock-container">
+                <div class="digital-time" id="digitalTime">00:00:00</div>
+                <div class="date-display" id="dateDisplay">Samstag, 24. Mai 2025</div>
+                
+                <div class="analog-clock">
+                    <div class="clock-numbers">
+                        <div class="number" style="top: 10px; left: 50%; transform: translateX(-50%);">12</div>
+                        <div class="number" style="top: 50%; right: 10px; transform: translateY(-50%);">3</div>
+                        <div class="number" style="bottom: 10px; left: 50%; transform: translateX(-50%);">6</div>
+                        <div class="number" style="top: 50%; left: 10px; transform: translateY(-50%);">9</div>
+                    </div>
+                    
+                    <div class="hand hour-hand" id="hourHand"></div>
+                    <div class="hand minute-hand" id="minuteHand"></div>
+                    <div class="hand second-hand" id="secondHand"></div>
+                    <div class="center-dot"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Alarm Section -->
+        <div class="content-section" id="alarm">
+            <div class="alarm-container">
+                <div class="alarm-header">
+                    <h2 class="alarm-title">Wecker</h2>
+                </div>
+                
+                <input type="time" class="alarm-input" id="alarmTime" placeholder="Weckzeit einstellen">
+                <input type="text" class="alarm-input" id="alarmLabel" placeholder="Bezeichnung (optional)">
+                
+                <div class="alarm-controls">
+                    <button class="btn" id="addAlarm">Wecker hinzufügen</button>
+                    <button class="btn danger" id="clearAlarms">Alle löschen</button>
+                </div>
+                
+                <div class="alarm-list" id="alarmList">
+                    <!-- Alarm items will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stopwatch Section -->
+        <div class="content-section" id="stopwatch">
+            <div class="stopwatch-container">
+                <div class="stopwatch-display" id="stopwatchDisplay">00:00:00</div>
+                
+                <div class="stopwatch-controls">
+                    <button class="stopwatch-btn start" id="startStopBtn">Start</button>
+                    <button class="stopwatch-btn" id="lapResetBtn">Runde</button>
+                </div>
+                
+                <div class="laps-container" id="lapsContainer">
+                    <!-- Lap times will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-  <script>
-    const hourHand = document.getElementById('hour');
-    const minuteHand = document.getElementById('minute');
-    const secondHand = document.getElementById('second');
-
-    function updateClock() {
-      const now = new Date();
-      const seconds = now.getSeconds();
-      const minutes = now.getMinutes();
-      const hours = now.getHours();
-
-      const secDeg = seconds * 6; // 360° / 60s
-      const minDeg = minutes * 6 + seconds * 0.1; // smooth Minute
-      const hourDeg = (hours % 12) * 30 + minutes * 0.5; // smooth Stunde
-
-      secondHand.style.transform = `rotate(${secDeg}deg)`;
-      minuteHand.style.transform = `rotate(${minDeg}deg)`;
-      hourHand.style.transform = `rotate(${hourDeg}deg)`;
-    }
-
-    setInterval(updateClock, 1000);
-    updateClock();
-  </script>
+<script src="script.js"></script>
 </body>
 </html>
