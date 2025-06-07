@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: #f0f8ff;
+    background: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,7 +12,6 @@ body {
     background: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 input {
