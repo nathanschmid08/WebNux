@@ -61,9 +61,27 @@ function writeLine() {
   }
 }
 
+let aborted = false;
+
 function startCountdown(count) {
   const lineId = "countdown-line";
-  if (count >= 0) {
+
+  function onKeyPressAbort() {
+    aborted = true;
+    window.removeEventListener("keydown", onKeyPressAbort); // Nur einmal ausführen
+
+    // Feedback anzeigen
+    output.innerHTML += "\nBoot aborted. Entering EFI settings...\n";
+
+    // Kurze Verzögerung, damit man die Nachricht sieht
+    setTimeout(() => {
+      window.location.href = "../EFI/efi.html"; // Redirect zur EFI-Seite
+    }, 800);
+  }
+
+  window.addEventListener("keydown", onKeyPressAbort);
+
+  if (count >= 0 && !aborted) {
     const existing = document.getElementById(lineId);
     if (existing) {
       existing.textContent = countdownText + count;
@@ -73,8 +91,11 @@ function startCountdown(count) {
       line.textContent = countdownText + count;
       output.appendChild(line);
     }
-    setTimeout(() => startCountdown(count - 1), 1000);
-  } else {
+
+    setTimeout(() => {
+      if (!aborted) startCountdown(count - 1);
+    }, 1000);
+  } else if (!aborted) {
     document.getElementById(lineId).textContent = countdownText + "0";
     setTimeout(() => showFinalBootLines(0), 500);
   }
