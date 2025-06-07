@@ -105,6 +105,13 @@ function showFinalBootLines(i) {
   if (i < finalBootLines.length) {
     output.innerHTML += finalBootLines[i] + "\n";
     setTimeout(() => showFinalBootLines(i + 1), 80);
+  } else {
+    // Nach dem letzten Boot-Text → Weiterleitung, wenn nicht abgebrochen
+    setTimeout(() => {
+      if (!aborted) {
+        window.location.href = "../BOOTSCREEN/bootscreen.html";
+      }
+    }, 1000); // 1 Sekunde Verzögerung zur Lesbarkeit
   }
 }
 

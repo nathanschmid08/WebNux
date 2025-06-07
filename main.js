@@ -12,18 +12,8 @@ function createMainWindow() {
     }
   });
 
-  // Zuerst bootloader.html laden
+  // Nur den Bootloader laden – alles Weitere macht der Renderer selbst
   mainWindow.loadFile(path.join(__dirname, 'BOOTLOADER', 'bootloader.html'));
-
-  // Nach 6 Sekunden bootscreen.html laden
-  setTimeout(() => {
-    mainWindow.loadFile(path.join(__dirname, 'BOOTSCREEN', 'bootscreen.html'));
-  }, 6000);
-
-  // Nach weiteren 5 Sekunden index.html laden
-  setTimeout(() => {
-    mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  }, 6000 + 5000);
 }
 
 app.whenReady().then(createMainWindow);
