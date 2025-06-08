@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Translator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="translator">
+    <h2>Translator</h2>
+
+    <div class="controls">
+      <select id="fromLang">
+        <option value="de">Deutsch</option>
+        <option value="en">Englisch</option>
+        <option value="fr">Französisch</option>
+        <option value="es">Spanisch</option>
+        <option value="it">Italienisch</option>
+        <option value="ru">Russisch</option>
+      </select>
+      <span class="arrow">→</span>
+      <select id="toLang">
+        <option value="en">Englisch</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Französisch</option>
+        <option value="es">Spanisch</option>
+        <option value="it">Italienisch</option>
+        <option value="ru">Russisch</option>
+      </select>
+    </div>
+
+    <textarea id="inputText" placeholder="Text eingeben..."></textarea>
+    <button onclick="translateText()">Übersetzen</button>
+
+    <div class="output">
+      <h4>Übersetzung:</h4>
+      <textarea id="outputText" readonly></textarea>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
