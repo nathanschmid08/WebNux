@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Einfacher Code Editor</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+    }
+
+    .editor {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #ccc;
+    }
+
+    textarea {
+      flex: 1;
+      width: 100%;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      border: none;
+      outline: none;
+      resize: none;
+    }
+
+    iframe {
+      flex: 1;
+      border: none;
+    }
+
+    .preview {
+      flex: 1;
+    }
+
+    label {
+      background: #eee;
+      padding: 5px 10px;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Einfacher Code Editor</h1>
+  </header>
+  <main>
+    <div class="editor">
+      <label for="html">HTML</label>
+      <textarea id="html" placeholder="HTML-Code hier..."></textarea>
+    </div>
+    <div class="editor">
+      <label for="css">CSS</label>
+      <textarea id="css" placeholder="CSS-Code hier..."></textarea>
+    </div>
+    <div class="editor">
+      <label for="js">JavaScript</label>
+      <textarea id="js" placeholder="JavaScript-Code hier..."></textarea>
+    </div>
+    <div class="preview">
+      <iframe id="preview"></iframe>
+    </div>
+  </main>
+
+  <script>
+    const htmlInput = document.getElementById("html");
+    const cssInput = document.getElementById("css");
+    const jsInput = document.getElementById("js");
+    const previewFrame = document.getElementById("preview");
+
+    function updatePreview() {
+      const html = htmlInput.value;
+      const css = `<style>${cssInput.value}</style>`;
+      const js = `<script>${jsInput.value}<\/script>`;
+
+      const output = `${html}\n${css}\n${js}`;
+      const preview = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      preview.open();
+      preview.write(output);
+      preview.close();
+    }
+
+    htmlInput.addEventListener("input", updatePreview);
+    cssInput.addEventListener("input", updatePreview);
+    jsInput.addEventListener("input", updatePreview);
+
+    // Initialer Inhalt
+    htmlInput.value = "<h1>Hello, Welt!</h1>";
+    cssInput.value = "h1 { color: darkblue; text-align: center; }";
+    jsInput.value = "console.log('Hallo aus JS!');";
+    updatePreview();
+  </script>
+</body>
+</html>
