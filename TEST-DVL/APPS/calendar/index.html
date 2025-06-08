@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Kalender App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="calendar">
+  <header>
+    <span class="nav-btn" onclick="changeMonth(-1)">&#8592;</span>
+    <h1 id="monthYear"></h1>
+    <span class="nav-btn" onclick="changeMonth(1)">&#8594;</span>
+  </header>
+  <div class="days day-names">
+    <div>Mo</div><div>Di</div><div>Mi</div><div>Do</div><div>Fr</div><div>Sa</div><div>So</div>
+  </div>
+  <div class="days" id="calendarDays"></div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
