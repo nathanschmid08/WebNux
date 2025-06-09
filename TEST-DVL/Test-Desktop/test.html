@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fedora Desktop Environment</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background-image: url('wallpaper.jpeg');
+            background-size: cover; /* Bild wird skaliert, um den gesamten Bereich zu füllen */
+            background-position: center; /* zentriert das Bild */
+            background-repeat: no-repeat; /* verhindert Wiederholung */
+            overflow: hidden;
+            font-family: 'Cantarell', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        /* Desktop wallpaper overlay */
+        .desktop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 60px;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+        }
+
+        /* Top panel - Fedora GNOME style */
+        .top-panel {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            z-index: 1000;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .activities-button {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .activities-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .top-panel-center {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .top-panel-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ffffff;
+            font-size: 13px;
+        }
+
+        .system-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .system-indicator:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Search overlay */
+        .search-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 120px;
+        }
+
+        .search-box {
+            width: 500px;
+            max-width: 80%;
+            padding: 16px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 32px;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            outline: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 32px;
+            margin-top: 60px;
+            padding: 0 40px;
+        }
+
+        .app-grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            padding: 20px;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: white;
+        }
+
+        .app-grid-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .app-grid-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 12px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .app-grid-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .app-grid-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Bottom taskbar - Fedora dock style */
+        .taskbar {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 60px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .app-icon:hover {
+            transform: translateY(-4px) scale(1.1);
+        }
+
+        .app-icon::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .app-icon.active::before {
+            opacity: 1;
+        }
+
+        /* Window styling - back to original simple style */
+        .window {
+            position: absolute;
+            width: 400px;
+            height: 300px;
+            background: white;
+            border: 1px solid #ccc;
+            resize: both;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .window-header {
+            background: #2d3748;
+            color: white;
+            padding: 8px 12px;
+            cursor: move;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .window-control.close { background: #ff5f57; }
+        .window-control.minimize { background: #ffbd2e; }
+        .window-control.maximize { background: #28ca42; }
+
+        iframe {
+            width: 100%;
+            height: calc(100% - 36px);
+            border: none;
+        }
+
+        /* Context menu */
+        .context-menu {
+            position: absolute;
+            background: rgba(40, 40, 40, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 0;
+            min-width: 180px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            color: white;
+            font-size: 13px;
+            z-index: 2000;
+            display: none;
+        }
+
+        .context-menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .context-menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .app-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 24px;
+            }
+            
+            .taskbar {
+                bottom: 8px;
+                height: 50px;
+                gap: 6px;
+            }
+            
+            .app-icon {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Desktop area -->
+    <div class="desktop" id="desktop"></div>
+
+    <!-- Top panel -->
+    <div class="top-panel">
+        <button class="activities-button" onclick="toggleSearch()">Activities</button>
+        <div class="top-panel-center">
+            <span id="date">Jun 16</span>
+        </div>
+        <div class="top-panel-right">
+            <div class="system-indicator">
+                <span>🔊</span>
+            </div>
+            <div class="system-indicator">
+                <span>📶</span>
+            </div>
+            <div class="system-indicator">
+                <span>🔋</span>
+                <span id="battery">84%</span>
+            </div>
+            <div class="system-indicator">
+                <span id="clock">3:44 PM</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <input type="text" class="search-box" placeholder="Type to search..." id="searchBox">
+        <div class="app-grid">
+            <div class="app-grid-item" onclick="openApp('Calculator', 'APPS/calculator/calculator.html', 400, 480)">
+                <div class="app-grid-icon">
+                    <img src="../ICONS/Apps/apps-calc.png" alt="Calculator">
+                </div>
+                <div class="app-grid-label">Calculator</div>
+            </div>
+            <div class="app-grid-item" onclick="openApp('Text Editor', 'APPS/sticky-notes/sticky-notes.html', 500, 400)">
+                <div class="app-grid-icon">
+                    <img src="../ICONS/Apps/apps-sticky-notes.png" alt="Editor">
+                </div>
+                <div class="app-grid-label">Text Editor</div>
+            </div>
+            <div class="app-grid-item" onclick="openApp('Weather', 'APPS/weather/index.html', 350, 500)">
+                <div class="app-grid-icon">
+                    <img src="../ICONS/Apps/apps-weather.png" alt="Weather">
+                </div>
+                <div class="app-grid-label">Weather</div>
+            </div>
+            <div class="app-grid-item" onclick="openApp('Clock', 'APPS/clock/index.html', 600, 500)">
+                <div class="app-grid-icon">
+                    <img src="../ICONS/Apps/apps-clock.png" alt="Clock">
+                </div>
+                <div class="app-grid-label">Clock</div>
+            </div>
+            <div class="app-grid-item" onclick="openApp('Calendar', 'APPS/calendar/index.html', 450, 500)">
+                <div class="app-grid-icon">
+                    <img src="../ICONS/Apps/apps-calendar.png" alt="Calendar">
+                </div>
+                <div class="app-grid-label">Calendar</div>
+            </div>
+            <div class="app-grid-item" onclick="openApp('Translator', 'APPS/translator/index.html', 400, 500)">
+                <div class="app-grid-icon">
+                    <img src="../ICONS/Apps/apps-translator.png" alt="Translator">
+                </div>
+                <div class="app-grid-label">Translator</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom dock -->
+    <div class="taskbar">
+        <div class="app-icon" onclick="openApp('Calculator', 'APPS/calculator/calculator.html', 400, 480)" title="Calculator">
+            <img src="../ICONS/Apps/apps-calc.png" alt="Calculator">
+        </div>
+
+        <div class="app-icon" onclick="openApp('Text Editor', 'APPS/sticky-notes/sticky-notes.html', 500, 400)" title="Text Editor">
+            <img src="../ICONS/Apps/apps-sticky-notes.png" alt="Editor">
+        </div>
+
+        <div class="app-icon" onclick="openApp('Weather', 'APPS/weather/index.html', 350, 500)" title="Weather">
+            <img src="../ICONS/Apps/apps-weather.png" alt="Weather">
+        </div>
+
+        <div class="app-icon" onclick="openApp('Clock', 'APPS/clock/index.html', 600, 500)" title="Clock">
+            <img src="../ICONS/Apps/apps-clock.png" alt="Clock">
+        </div>
+
+        <div class="app-icon" onclick="openApp('Calendar', 'APPS/calendar/index.html', 450, 500)" title="Calendar">
+            <img src="../ICONS/Apps/apps-calendar.png" alt="Calendar">
+        </div>
+
+        <div class="app-icon" onclick="openApp('Translator', 'APPS/translator/index.html', 400, 500)" title="Translator">
+            <img src="../ICONS/Apps/apps-translator.png" alt="Translator">
+        </div>
+    </div>
+
+    <!-- Context menu -->
+    <div class="context-menu" id="contextMenu">
+        <div class="context-menu-item" onclick="showNotification('New Folder Created')">New Folder</div>
+        <div class="context-menu-item" onclick="showNotification('Refreshed')">Refresh</div>
+        <div class="context-menu-item" onclick="showNotification('Properties opened')">Properties</div>
+    </div>
+
+    <script>
+        let z = 1;
+
+        // Update clock
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true
+            });
+            const dateString = now.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric' 
+            });
+            document.getElementById('clock').textContent = timeString;
+            document.getElementById('date').textContent = dateString;
+        }
+
+        // Initialize clock
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Search overlay functionality
+        function toggleSearch() {
+            const overlay = document.getElementById('searchOverlay');
+            const searchBox = document.getElementById('searchBox');
+            
+            if (overlay.style.display === 'flex') {
+                overlay.style.display = 'none';
+            } else {
+                overlay.style.display = 'flex';
+                setTimeout(() => searchBox.focus(), 100);
+            }
+        }
+
+        // Close search on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('searchOverlay').style.display = 'none';
+            }
+        });
+
+        // Close search when clicking outside
+        document.getElementById('searchOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                e.currentTarget.style.display = 'none';
+            }
+        });
+
+        // Original window functionality - simple and effective
+        function openApp(title, url, width = 400, height = 300) {
+            const win = document.createElement('div');
+            win.className = 'window';
+            win.style.top = '50px';
+            win.style.left = '50px';
+            win.style.zIndex = z++;
+            win.style.width = `${width}px`;
+            win.style.height = `${height}px`;
+
+            win.innerHTML = `
+                <div class="window-header">
+                    <span>${title}</span>
+                    <div class="window-controls">
+                        <div class="window-control minimize"></div>
+                        <div class="window-control maximize"></div>
+                        <div class="window-control close" onclick="closeWindow(this)"></div>
+                    </div>
+                </div>
+                <iframe src="${url}"></iframe>
+            `;
+
+            makeDraggable(win);
+            document.body.appendChild(win);
+            
+            // Close search overlay when opening app
+            document.getElementById('searchOverlay').style.display = 'none';
+        }
+
+        function closeWindow(control) {
+            const window = control.closest('.window');
+            window.remove();
+        }
+
+        // Original drag functionality - simple and smooth
+        function makeDraggable(el) {
+            const header = el.querySelector('.window-header');
+            let offsetX = 0, offsetY = 0, isDragging = false;
+
+            header.addEventListener('mousedown', e => {
+                if (e.target.classList.contains('window-control')) return;
+                isDragging = true;
+                offsetX = e.clientX - el.offsetLeft;
+                offsetY = e.clientY - el.offsetTop;
+                el.style.zIndex = z++;
+            });
+
+            document.addEventListener('mousemove', e => {
+                if (isDragging) {
+                    el.style.left = `${e.clientX - offsetX}px`;
+                    el.style.top = `${e.clientY - offsetY}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        }
+
+        // Context menu functionality
+        const contextMenu = document.getElementById('contextMenu');
+        const desktop = document.getElementById('desktop');
+
+        desktop.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = `${e.clientX}px`;
+            contextMenu.style.top = `${e.clientY}px`;
+        });
+
+        document.addEventListener('click', () => {
+            contextMenu.style.display = 'none';
+        });
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 50px;
+                right: 20px;
+                background: rgba(40, 40, 40, 0.95);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                z-index: 3000;
+                backdrop-filter: blur(10px);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // App icon active states
+        document.querySelectorAll('.app-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                this.classList.add('active');
+                setTimeout(() => this.classList.remove('active'), 2000);
+            });
+        });
+    </script>
+</body>
+
+</html>
