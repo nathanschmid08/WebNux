@@ -1,0 +1,6 @@
+# Nur .js-Dateien zählen
+*.js linguist-detectable=true
+
+# Alles andere ignorieren
+*.html linguist-detectable=false
+*.css linguist-detectable=false
