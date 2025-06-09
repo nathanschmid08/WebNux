@@ -1,0 +1,319 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background-image: url('../ICONS/wallpaper.jpeg');
+    background-size: cover; /* Bild wird skaliert, um den gesamten Bereich zu füllen */
+    background-position: center; /* zentriert das Bild */
+    background-repeat: no-repeat; /* verhindert Wiederholung */
+    overflow: hidden;
+    font-family: 'Cantarell', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+}
+
+/* Desktop wallpaper overlay */
+.desktop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+}
+
+/* Top panel - Fedora GNOME style */
+.top-panel {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    z-index: 1000;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.activities-button {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.activities-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.top-panel-center {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.top-panel-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.system-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.system-indicator:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Search overlay */
+.search-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 120px;
+}
+
+.search-box {
+    width: 500px;
+    max-width: 80%;
+    padding: 16px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 32px;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    outline: none;
+    backdrop-filter: blur(10px);
+}
+
+.search-box::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 32px;
+    margin-top: 60px;
+    padding: 0 40px;
+}
+
+.app-grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    padding: 20px;
+    border-radius: 16px;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+.app-grid-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.app-grid-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 12px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.app-grid-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.app-grid-label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Bottom taskbar - Fedora dock style */
+.taskbar {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 60px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.app-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.app-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.app-icon:hover {
+    transform: translateY(-4px) scale(1.1);
+}
+
+.app-icon::before {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: #ffffff;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.app-icon.active::before {
+    opacity: 1;
+}
+
+/* Window styling - back to original simple style */
+.window {
+    position: absolute;
+    width: 400px;
+    height: 300px;
+    background: white;
+    border: 1px solid #ccc;
+    resize: both;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.window-header {
+    background: #2d3748;
+    color: white;
+    padding: 8px 12px;
+    cursor: move;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.window-control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.window-control.close { background: #ff5f57; }
+.window-control.minimize { background: #ffbd2e; }
+.window-control.maximize { background: #28ca42; }
+
+iframe {
+    width: 100%;
+    height: calc(100% - 36px);
+    border: none;
+}
+
+/* Context menu */
+.context-menu {
+    position: absolute;
+    background: rgba(40, 40, 40, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 180px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 13px;
+    z-index: 2000;
+    display: none;
+}
+
+.context-menu-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.context-menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .app-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
+    
+    .taskbar {
+        bottom: 8px;
+        height: 50px;
+        gap: 6px;
+    }
+    
+    .app-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
