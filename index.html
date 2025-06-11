@@ -20,18 +20,19 @@
         <div class="top-panel-right">
             <div class="system-indicator">
                 <span>🔊</span>
+                <span id="volume">--%</span> <!-- NEU -->
             </div>
             <div class="system-indicator">
-                <span>📶</span>
+                <span id="network">📶</span> <!-- ID hinzugefügt -->
             </div>
             <div class="system-indicator">
                 <span>🔋</span>
-                <span id="battery">84%</span>
+                <span id="battery">--%</span>
             </div>
             <div class="system-indicator">
-                <span id="clock">3:44 PM</span>
+                <span id="clock">--:--</span>
             </div>
-        </div>
+        </div>        
     </div>
 
     <!-- Search overlay -->
@@ -40,37 +41,37 @@
         <div class="app-grid">
             <div class="app-grid-item" onclick="openApp('Calculator', 'APPS/calculator/calculator.html', 400, 480)">
                 <div class="app-grid-icon">
-                    <img src="../ICONS/Apps/apps-calc.png" alt="Calculator">
+                    <img src="ICONS/Apps/apps-calc.png" alt="Calculator">
                 </div>
                 <div class="app-grid-label">Calculator</div>
             </div>
             <div class="app-grid-item" onclick="openApp('Text Editor', 'APPS/sticky-notes/sticky-notes.html', 500, 400)">
                 <div class="app-grid-icon">
-                    <img src="../ICONS/Apps/apps-sticky-notes.png" alt="Editor">
+                    <img src="ICONS/Apps/apps-sticky-notes.png" alt="Editor">
                 </div>
                 <div class="app-grid-label">Text Editor</div>
             </div>
             <div class="app-grid-item" onclick="openApp('Weather', 'APPS/weather/index.html', 350, 500)">
                 <div class="app-grid-icon">
-                    <img src="../ICONS/Apps/apps-weather.png" alt="Weather">
+                    <img src="ICONS/Apps/apps-weather.png" alt="Weather">
                 </div>
                 <div class="app-grid-label">Weather</div>
             </div>
             <div class="app-grid-item" onclick="openApp('Clock', 'APPS/clock/index.html', 600, 500)">
                 <div class="app-grid-icon">
-                    <img src="../ICONS/Apps/apps-clock.png" alt="Clock">
+                    <img src="ICONS/Apps/apps-clock.png" alt="Clock">
                 </div>
                 <div class="app-grid-label">Clock</div>
             </div>
             <div class="app-grid-item" onclick="openApp('Calendar', 'APPS/calendar/index.html', 450, 500)">
                 <div class="app-grid-icon">
-                    <img src="../ICONS/Apps/apps-calendar.png" alt="Calendar">
+                    <img src="ICONS/Apps/apps-calendar.png" alt="Calendar">
                 </div>
                 <div class="app-grid-label">Calendar</div>
             </div>
             <div class="app-grid-item" onclick="openApp('Translator', 'APPS/translator/index.html', 400, 500)">
                 <div class="app-grid-icon">
-                    <img src="../ICONS/Apps/apps-translator.png" alt="Translator">
+                    <img src="ICONS/Apps/apps-translator.png" alt="Translator">
                 </div>
                 <div class="app-grid-label">Translator</div>
             </div>
@@ -80,27 +81,27 @@
     <!-- Bottom dock -->
     <div class="taskbar">
         <div class="app-icon" onclick="openApp('Calculator', 'APPS/calculator/calculator.html', 400, 480)" title="Calculator">
-            <img src="../ICONS/Apps/apps-calc.png" alt="Calculator">
+            <img src="ICONS/Apps/apps-calc.png" alt="Calculator">
         </div>
 
         <div class="app-icon" onclick="openApp('Text Editor', 'APPS/sticky-notes/sticky-notes.html', 500, 400)" title="Text Editor">
-            <img src="../ICONS/Apps/apps-sticky-notes.png" alt="Editor">
+            <img src="ICONS/Apps/apps-sticky-notes.png" alt="Editor">
         </div>
 
         <div class="app-icon" onclick="openApp('Weather', 'APPS/weather/index.html', 350, 500)" title="Weather">
-            <img src="../ICONS/Apps/apps-weather.png" alt="Weather">
+            <img src="ICONS/Apps/apps-weather.png" alt="Weather">
         </div>
 
         <div class="app-icon" onclick="openApp('Clock', 'APPS/clock/index.html', 600, 500)" title="Clock">
-            <img src="../ICONS/Apps/apps-clock.png" alt="Clock">
+            <img src="ICONS/Apps/apps-clock.png" alt="Clock">
         </div>
 
         <div class="app-icon" onclick="openApp('Calendar', 'APPS/calendar/index.html', 450, 500)" title="Calendar">
-            <img src="../ICONS/Apps/apps-calendar.png" alt="Calendar">
+            <img src="ICONS/Apps/apps-calendar.png" alt="Calendar">
         </div>
 
         <div class="app-icon" onclick="openApp('Translator', 'APPS/translator/index.html', 400, 500)" title="Translator">
-            <img src="../ICONS/Apps/apps-translator.png" alt="Translator">
+            <img src="ICONS/Apps/apps-translator.png" alt="Translator">
         </div>
     </div>
 
@@ -112,6 +113,7 @@
     </div>
 
     <script src="INEDX/script.js"></script>
+    <script src="INEDX/top-panel.js"></script>
 </body>
 
 </html>
