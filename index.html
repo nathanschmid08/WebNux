@@ -39,36 +39,42 @@
     <div class="search-overlay" id="searchOverlay">
         <input type="text" class="search-box" placeholder="Type to search..." id="searchBox">
         <div class="app-grid">
+
             <div class="app-grid-item" onclick="openApp('Calculator', 'APPS/calculator/calculator.html', 400, 480)">
                 <div class="app-grid-icon">
                     <img src="ICONS/Apps/apps-calc.png" alt="Calculator">
                 </div>
                 <div class="app-grid-label">Calculator</div>
             </div>
+
             <div class="app-grid-item" onclick="openApp('Text Editor', 'APPS/sticky-notes/sticky-notes.html', 500, 400)">
                 <div class="app-grid-icon">
                     <img src="ICONS/Apps/apps-sticky-notes.png" alt="Editor">
                 </div>
                 <div class="app-grid-label">Text Editor</div>
             </div>
+
             <div class="app-grid-item" onclick="openApp('Weather', 'APPS/weather/index.html', 350, 500)">
                 <div class="app-grid-icon">
                     <img src="ICONS/Apps/apps-weather.png" alt="Weather">
                 </div>
                 <div class="app-grid-label">Weather</div>
             </div>
+
             <div class="app-grid-item" onclick="openApp('Clock', 'APPS/clock/index.html', 600, 500)">
                 <div class="app-grid-icon">
                     <img src="ICONS/Apps/apps-clock.png" alt="Clock">
                 </div>
                 <div class="app-grid-label">Clock</div>
             </div>
+
             <div class="app-grid-item" onclick="openApp('Calendar', 'APPS/calendar/index.html', 450, 500)">
                 <div class="app-grid-icon">
                     <img src="ICONS/Apps/apps-calendar.png" alt="Calendar">
                 </div>
                 <div class="app-grid-label">Calendar</div>
             </div>
+
             <div class="app-grid-item" onclick="openApp('Translator', 'APPS/translator/index.html', 400, 500)">
                 <div class="app-grid-icon">
                     <img src="ICONS/Apps/apps-translator.png" alt="Translator">
@@ -80,6 +86,11 @@
 
     <!-- Bottom dock -->
     <div class="taskbar">
+
+        <div class="app-icon" onclick="toggleSearch()" title="Launchpad">
+            <img src="ICONS/Apps/apps-launchpad.png" alt="Launchpad">
+        </div>
+
         <div class="app-icon" onclick="openApp('Calculator', 'APPS/calculator/calculator.html', 400, 480)" title="Calculator">
             <img src="ICONS/Apps/apps-calc.png" alt="Calculator">
         </div>
